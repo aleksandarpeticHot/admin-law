@@ -52,6 +52,7 @@ export async function middleware(request: NextRequest) {
 // Apply middleware to all routes EXCEPT /login
 export const config = {
   matcher: [
+    "/",
     "/users"
   ]
 };

@@ -4,20 +4,18 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "@/pages/lib/auth/jwt";
 
 const prisma = new PrismaClient();
+export interface LoginRequestBody {
+  email: string;
+  password: string;
+}
 
-export default async function handler(
+export default async function login(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
-  }
-
-  // Define request body type
-  interface LoginRequestBody {
-    email: string;
-    password: string;
   }
 
   const { email, password }: LoginRequestBody = req.body;

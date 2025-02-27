@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 async function main() {
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
+  console.log(email)
 
   if (!email || !password) {
     console.error("⚠️ ADMIN_EMAIL or ADMIN_PASSWORD is missing from .env file");
