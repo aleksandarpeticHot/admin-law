@@ -2,9 +2,11 @@ import { Button, Form } from "@heroui/react";
 import { LoginEl } from "./style";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
-import { LoginService } from "@/lib/api/login";
 import { notify } from "../lib/notify";
 import Loader from "@/components/Loader";
+import { useRouter } from "next/router";
+import { Routes } from "@/constants";
+import Cookies from "js-cookie";
 
 type LoginPayload = {
   email: string
@@ -13,19 +15,38 @@ type LoginPayload = {
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   async function handleSubmit(data: LoginPayload) {
     setIsLoading(true)
     try {
-      const response = await LoginService.login(data)
-      localStorage.setItem('token', response.data.token)
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+
+      const result = await response.json();
+      Cookies.set("token", result.token, {
+        expires: 1, // 1 day
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+      });
       notify('Successfully logged in', 'success')
+      router.push(Routes.USERS)
     } catch (error) {
       console.log(error)
       notify('Error', 'danger')
-    } finally {
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   function renderLoginForm() {
@@ -67,7 +88,7 @@ const Login = () => {
       />
       <div className="flex gap-[10px] justify-end w-full">
         <Button variant="shadow" color="primary" type="submit">{'Login'}</Button>
-        <Button variant="shadow" color="primary" type="button">{'Register'}</Button>
+        <Button variant="shadow" color="primary" type="button" onPress={() => router.push(Routes.USERS)}>{'Register'}</Button>
       </div>
     </Form>
   }

@@ -2,52 +2,41 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { generateToken } from "@/pages/lib/auth/jwt";
+import { serialize } from "cookie";
 
 const prisma = new PrismaClient();
-export interface LoginRequestBody {
-  email: string;
-  password: string;
-}
 
-export default async function login(
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
+export default async function login(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    res.status(405).json({ error: "Method Not Allowed" });
-    return;
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const { email, password }: LoginRequestBody = req.body;
+  const { email, password } = req.body;
 
-  // Validate input
   if (!email || !password) {
-    res.status(400).json({ error: "Email and password are required" });
-    return;
+    return res.status(400).json({ error: "Email and password are required" });
   }
 
-  // Find user in database
-  const user = await prisma.users.findUnique({
-    where: { email },
-  });
+  const user = await prisma.users.findUnique({ where: { email } });
 
-  if (!user) {
-    res.status(401).json({ error: "Invalid email or password" });
-    return;
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ error: "Invalid email or password" });
   }
 
-  // Compare hashed password
-  const isMatch: boolean = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    res.status(401).json({ error: "Invalid email or password" });
-    return;
-  }
+  const token = await generateToken(user);
 
-  // Generate JWT Token using jose
-  const token = await generateToken(user)
+  console.log("✅ Token Generated:", token); // Debugging
 
-  res.status(200).json({
-    message: "Login successful!",
-    token,
-  });
+  // ✅ Set HttpOnly cookie
+  res.setHeader(
+    "Set-Cookie",
+    serialize("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false, // Secure only in production
+      sameSite: "lax", // ✅ Ensures middleware can access the cookie
+      path: "/",
+    })
+  );
+
+  res.status(200).json({ message: "Login successful!" });
 }

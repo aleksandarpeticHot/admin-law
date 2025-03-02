@@ -4,8 +4,9 @@ import axios from "axios";
 const api = axios.create({
   baseURL: ENVIRONMENT.API_URL,
   headers: {
-    'Content-type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
+  withCredentials: true, // ✅ Ensures cookies are sent with requests
 });
 
 api.interceptors.request.use(request => {
