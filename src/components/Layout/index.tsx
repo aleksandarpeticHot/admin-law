@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const timer = setTimeout(() => {
       setDisplayedChildren(children);
       setIsPageTransitioning(false);
-    }, 300);
+    }, 200);
     return () => clearTimeout(timer);
   }, [children])
 

@@ -3,10 +3,10 @@ import { LoginEl } from "./style";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 import { notify } from "../lib/notify";
-import Loader from "@/components/Loader";
 import { useRouter } from "next/router";
 import { Routes } from "@/constants";
-import Cookies from "js-cookie";
+import { AuthService } from "@/lib/api/auth";
+import { AxiosError } from "axios";
 
 type LoginPayload = {
   email: string
@@ -20,31 +20,17 @@ const Login = () => {
   async function handleSubmit(data: LoginPayload) {
     setIsLoading(true)
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
+      await AuthService.login(data)
+      notify('Successfully logged in', 'success')
+      router.push(Routes.DASHBOARD)
+    } catch (error: unknown) {
+      let errorMessage = "An unexpected error occurred";
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message || errorMessage;
       }
 
-      const result = await response.json();
-      Cookies.set("token", result.token, {
-        expires: 1, // 1 day
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
-      });
-      notify('Successfully logged in', 'success')
-      router.push(Routes.USERS)
-    } catch (error) {
-      console.log(error)
-      notify('Error', 'danger')
+      notify(errorMessage, "danger");
     }
     setIsLoading(false)
   }
@@ -62,10 +48,9 @@ const Login = () => {
         handleSubmit(data);
       }}
     >
-      {isLoading && <Loader />}
       <div className="text-center w-full">
-        <LoginEl.LogoContainer style={{ backgroundImage: `url('/logo.png')` }} />
-        <LoginEl.Title>{'Law firm'}</LoginEl.Title>
+        <LoginEl.LogoContainer style={{ backgroundImage: `url('/radusinovic.jpg')` }} />
+        <LoginEl.Title>{'Radusinović'}</LoginEl.Title>
       </div>
       <LoginEl.FormHeading>{'Sign in'}</LoginEl.FormHeading>
       <CustomInput
@@ -73,6 +58,7 @@ const Login = () => {
         errorMessage="Please enter a valid email"
         label="Email"
         name="email"
+        disabled={isLoading}
         type="email"
         variant="bordered"
         placeholder="Enter email"
@@ -81,14 +67,27 @@ const Login = () => {
         isRequired
         errorMessage="Please enter a password"
         label="Password"
+        disabled={isLoading}
         type="password"
         name="password"
         variant="bordered"
         placeholder="Enter password"
       />
       <div className="flex gap-[10px] justify-end w-full">
-        <Button variant="shadow" color="primary" type="submit">{'Login'}</Button>
-        <Button variant="shadow" color="primary" type="button" onPress={() => router.push(Routes.USERS)}>{'Register'}</Button>
+        <Button
+          isLoading={isLoading}
+          variant="shadow"
+          color="primary"
+          type="submit">
+          {'Login'}
+        </Button>
+        <Button
+          variant="shadow"
+          color="primary"
+          type="button"
+          onPress={() => router.push(Routes.USERS)}>
+          {'Register'}
+        </Button>
       </div>
     </Form>
   }

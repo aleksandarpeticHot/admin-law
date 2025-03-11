@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
     styledComponents: true, // Enables SWC-based styled-components support
+  },
+  experimental: {
+    forceSwcTransforms: true, // ✅ Forces SWC even with Babel
   }
 };
 

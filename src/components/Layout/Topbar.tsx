@@ -9,8 +9,23 @@ import {
   Input,
   User
 } from '@heroui/react';
+import { AuthService } from '@/lib/api/auth';
+import { notify } from '@/pages/lib/notify';
+import { Routes } from '@/constants';
+import { useRouter } from 'next/router';
 
 const Topbar: React.FC = () => {
+  const router = useRouter()
+
+  async function handleLogout() {
+    try {
+      const response = await AuthService.logout()
+      notify(response.data.message, 'success')
+      router.push(Routes.LOGIN)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <header className="flex items-center justify-between h-16 px-6 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -19,21 +34,15 @@ const Topbar: React.FC = () => {
           <Input
             isClearable
             classNames={{
-              label: "text-black/50 dark:text-white/90",
-              input: [
-                "bg-transparent",
-                "text-black/90 dark:text-white/90",
-                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-              ],
-              innerWrapper: "bg-transparent",
               inputWrapper: [
-                "bg-default-200/50"
+                "bg-white",
+                "border-[1px] border-solid border-[rgba(148,163,184,var(--tw-text-opacity,1))]"
               ],
             }}
             placeholder="Type to search..."
             radius="lg"
             startContent={
-              <Search className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+              <Search className="text-black/50 mb-0.5 text-slate-400 pointer-events-none flex-shrink-0" />
             }
           />
         </div>
@@ -45,25 +54,26 @@ const Topbar: React.FC = () => {
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                src: "/rakic.png",
               }}
               className="transition-transform"
-              description="@tonyreichert"
-              name="Tony Reichert"
+              description="@rakic.gmail.com"
+              name="Rakic Nikola"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-bold">Signed in as</p>
-              <p className="font-bold">@tonyreichert</p>
+              <p className="font-bold">Signed in as Rakic</p>
+              <p className="font-bold">@rakic.gmail.com</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
             <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem
+              onPress={() => handleLogout()}
+              key="logout"
+              color="danger"
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>
