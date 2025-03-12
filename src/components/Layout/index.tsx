@@ -30,11 +30,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col flex-1 w-full overflow-hidden">
           <Topbar />
           <main className={cn(
-            "flex-1 overflow-auto p-4 md:p-6",
+            "flex-1 overflow-auto md:p-10",
             isPageTransitioning ? "opacity-0 transform translate-y-4" : "opacity-100 transform translate-y-0",
             "transition-all duration-300 ease-in-out"
           )}>
-            <div className="max-w-7xl mx-auto w-full">
+            <div className="mx-auto w-full">
               {displayedChildren}
             </div>
           </main>

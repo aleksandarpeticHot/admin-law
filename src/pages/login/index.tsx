@@ -21,7 +21,7 @@ const Login = () => {
     setIsLoading(true)
     try {
       await AuthService.login(data)
-      notify('Successfully logged in', 'success')
+      notify('Success', 'success', 'Successfully logged in')
       router.push(Routes.DASHBOARD)
     } catch (error: unknown) {
       let errorMessage = "An unexpected error occurred";
@@ -30,7 +30,7 @@ const Login = () => {
         errorMessage = error.response?.data?.message || errorMessage;
       }
 
-      notify(errorMessage, "danger");
+      notify('Error', "danger", errorMessage);
     }
     setIsLoading(false)
   }

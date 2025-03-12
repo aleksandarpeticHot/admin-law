@@ -10,6 +10,7 @@
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@fontsource/nunito-sans": "^5.2.5",
     "@heroui/react": "^2.7.2",
     "@prisma/client": "^6.4.0",
     "axios": "^1.8.1",

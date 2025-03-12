@@ -72,7 +72,7 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 px-2 overflow-y-auto scrollbar-thin">
+        <nav className="flex-1 py-4 px-2 overflow-y-auto scrollbar-thin min-w-[220px]">
           <div className="space-y-1">
             <NavItem icon={Home} href="/dashboard" label="Dashboard" />
             <NavItem icon={BookOpen} href="/subjects" label="Subjects" />
