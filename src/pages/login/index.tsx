@@ -81,13 +81,6 @@ const Login = () => {
           type="submit">
           {'Login'}
         </Button>
-        <Button
-          variant="shadow"
-          color="primary"
-          type="button"
-          onPress={() => router.push(Routes.USERS)}>
-          {'Register'}
-        </Button>
       </div>
     </Form>
   }

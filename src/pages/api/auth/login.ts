@@ -1,13 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { generateToken } from "@/pages/lib/auth/jwt";
 import { serialize } from "cookie";
 
-const prisma = new PrismaClient();
-
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
-  console.log('login funkcija')
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }

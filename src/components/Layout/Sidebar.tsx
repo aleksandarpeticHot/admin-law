@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import {
   Briefcase,
   Users,
-  BookOpen,
   Home,
   BarChart4,
   Calendar,
@@ -75,9 +74,8 @@ const Sidebar: React.FC = () => {
         <nav className="flex-1 py-4 px-2 overflow-y-auto scrollbar-thin min-w-[220px]">
           <div className="space-y-1">
             <NavItem icon={Home} href="/dashboard" label="Dashboard" />
-            <NavItem icon={BookOpen} href="/subjects" label="Subjects" />
-            <NavItem icon={Briefcase} href="/projects" label="Projects" />
             <NavItem icon={Users} href="/clients" label="Clients" />
+            <NavItem icon={Briefcase} href="/projects" label="Projects" />
             <NavItem icon={Calendar} href="/calendar" label="Calendar" />
             <NavItem icon={FileText} href="/documents" label="Documents" />
             <NavItem icon={BarChart4} href="/analytics" label="Analytics" />

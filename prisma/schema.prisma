@@ -13,3 +13,35 @@ model users {
   password  String
   createdAt DateTime @default(now())
 }
+
+model cities {
+  id    Int      @id @default(autoincrement())
+  text  String   @db.VarChar(50)
+
+  clients clients[]  // Back-relation (One-to-Many)
+}
+
+model client_types {
+  id    Int      @id @default(autoincrement())
+  text  String   @db.VarChar(50)
+
+  clients clients[]  // Back-relation (One-to-Many)
+}
+
+model clients {
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(150)
+  state               String   @db.VarChar(200)
+  city_id             Int
+  street              String   @db.VarChar(200)
+  unique_id           String   @db.VarChar(13)
+  phone_number        String   @db.VarChar(50)
+  fax                 String?  @db.VarChar(200)
+  bank_account_number String? @db.VarChar(50)
+  contact             String?  @db.VarChar(200)
+  client_type_id      Int
+  description         String?  @db.VarChar(1000)
+
+  city           cities     @relation(fields: [city_id], references: [id]) 
+  clientType     client_types @relation(fields: [client_type_id], references: [id]) 
+}

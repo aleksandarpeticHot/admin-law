@@ -15,16 +15,13 @@ async function main() {
     process.exit(1);
   }
 
-  // Check if user already exists
   const existingUser = await prisma.users.findUnique({
     where: { email },
   });
 
   if (!existingUser) {
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert the Super Admin user
     await prisma.users.create({
       data: {
         email,
@@ -32,7 +29,7 @@ async function main() {
       },
     });
   } else {
-    console.log("⚠️ Super Admin user already exists.");
+    console.log("Super Admin user already exists.");
   }
 }
 
