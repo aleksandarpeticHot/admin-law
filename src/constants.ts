@@ -1,5 +1,7 @@
 export const Routes = {
   LOGIN: '/login',
   USERS: '/users',
-  DASHBOARD: '/dashboard'
+  DASHBOARD: '/dashboard',
+  CLIENTS: '/clients',
+  CLIENTS_CREATE: '/clients/create'
 }

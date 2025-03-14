@@ -1,11 +1,17 @@
 import TableComp from "@/components/TableComp"
-import { ClientService } from "@/lib/api/clients";
+import { Routes } from "@/constants";
+import { ClientOptionsType, ClientService } from "@/lib/api/clients";
 import {
   Input,
-  Button
+  Button,
+  Select,
+  SelectItem,
+  Autocomplete,
+  AutocompleteItem
 } from "@heroui/react";
 import { Search } from 'lucide-react'
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const tableColumnHeaders = [
   {
@@ -42,12 +48,20 @@ const tableColumnHeaders = [
 ]
 
 const Clients: React.FC = () => {
+  const router = useRouter()
+
   const [filterValues, setFilterValues] = useState({
     rows: 20,
-    page: 1
+    page: 1,
+    clientType: '',
+    city: ''
   })
   const [search, setSearch] = useState('')
   const [clients, setClients] = useState([])
+  const [options, setOptions] = useState<ClientOptionsType>({
+    cities: [],
+    clientTypes: []
+  })
 
   useEffect(() => {
     fetchClients()
@@ -61,7 +75,9 @@ const Clients: React.FC = () => {
   async function fetchClients() {
     try {
       const response = await ClientService.getClients({ ...filterValues })
+      const responseOptions = await ClientService.getClientOptions()
       setClients(response.data.data)
+      setOptions(responseOptions.data)
     } catch (error) {
       console.log(error)
     }
@@ -73,10 +89,10 @@ const Clients: React.FC = () => {
         <Input
           isClearable
           classNames={{
-            base: "w-full sm:max-w-[25%]",
+            base: "w-full sm:max-w-[250px]",
             inputWrapper: "border-1",
           }}
-          placeholder="Search by name..."
+          placeholder="Trazi klijenta..."
           size="sm"
           startContent={<Search className="text-default-300" />}
           value={search}
@@ -85,13 +101,48 @@ const Clients: React.FC = () => {
           onValueChange={(value: string) => setSearch(value)}
         />
         <div className="flex gap-3">
-          <Button className="bg-foreground text-background" size="md">
+
+          <Autocomplete
+            className="w-[200px]"
+            value={filterValues.city}
+            aria-label=""
+            placeholder="Odaberite grad"
+          >
+            {options.cities.map((city) => (
+              <AutocompleteItem
+                onPress={() => setFilterValues({
+                  ...filterValues,
+                  city: city.id
+                })}
+                key={city.id}>{city.text}</AutocompleteItem>
+            ))}
+          </Autocomplete>
+
+          <Select
+            className="w-[200px]"
+            aria-label=""
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => console.log(event.currentTarget)}
+            placeholder="Izaberi vrstu klijenta"
+            value={filterValues.clientType}
+          >
+            {options.clientTypes.map((clientType) => (
+              <SelectItem
+                key={clientType.id}
+                onPress={() => setFilterValues({
+                  ...filterValues,
+                  clientType: clientType.id
+                })}
+              >{clientType.text}</SelectItem>
+            ))}
+          </Select>
+
+          <Button onPress={() => router.push(Routes.CLIENTS_CREATE)} color="primary" size="md">
             Dodaj Klijenta
           </Button>
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <span className="text-default-400 text-small">Total {clients.length} users</span>
+        <span className="text-default-400 text-small">Total {clients.length} klijenata</span>
         <label className="flex items-center text-default-400 text-small">
           Redova po stranici:
           <select
@@ -111,9 +162,15 @@ const Clients: React.FC = () => {
     </div>
   }
 
+  function renderActions() {
+    return <>
+    </>
+  }
+
   return <div className="space-y-8 animate-fade-in w-full">
     <div>
       {renderFilters()}
+      {renderActions()}
       <TableComp
         tableColumnHeaders={tableColumnHeaders}
         rows={clients}
