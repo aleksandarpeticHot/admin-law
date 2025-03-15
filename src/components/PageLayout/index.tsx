@@ -49,7 +49,7 @@ const PageLayout: React.FC<Props> = (props) => {
       'animate-fade-in'
     )}>
       <Segment>
-        <div className='container py-2 px-5 flex h-16 items-center justify-between'>
+        <div className='w-[100%] py-2 px-5 flex h-16 items-center justify-between'>
           <div className='flex items-center gap-3'>
             <h1 className='text-xl font-semibold tracking-tight animate-slide-in flex align-baseline gap-[5px]'>
               {closeUrl && <Link className='mt-[2px]' href={closeUrl}>
