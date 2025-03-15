@@ -1,15 +1,20 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { HeroUIProvider, } from "@heroui/react";
-import { ThemeProvider, createGlobalStyle, DefaultTheme } from "styled-components";
-import { ToastProvider } from "@heroui/toast";
-import Layout from "@/components/Layout";
+import '@/styles/globals.css';
+import type { AppProps } from 'next/app';
+import { HeroUIProvider } from '@heroui/react';
+import { ThemeProvider, createGlobalStyle, DefaultTheme } from 'styled-components';
+import { ToastProvider } from '@heroui/toast';
+import Layout from '@/components/Layout';
 import { SWRConfig } from 'swr';
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
+
+    [data-slot === input-wrapper] {
+    background: white;
+    border: 1px solid rgba(34, 36, 38, .15);
+    }
   }
 `;
 
@@ -32,14 +37,14 @@ export default function App({ Component, pageProps }: AppProps) {
       <ToastProvider
         placement={'top-right'}
         toastProps={{
-          radius: "full",
-          color: "primary",
-          variant: "flat",
+          radius: 'full',
+          color: 'primary',
+          variant: 'flat',
           timeout: 2000,
           hideIcon: true,
           classNames: {
-            closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-          },
+            closeButton: 'opacity-100 absolute right-4 top-1/2 -translate-y-1/2'
+          }
         }}
       />
       <GlobalStyle />

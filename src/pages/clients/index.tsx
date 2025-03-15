@@ -1,7 +1,7 @@
-import PageLayout from "@/components/PageLayout";
-import TableComp from "@/components/TableComp"
-import { Routes } from "@/constants";
-import { useClientsOptionsSWR, useClientsSWR } from "@/swr/clientSwr";
+import PageLayout from '@/components/PageLayout';
+import TableComp from '@/components/TableComp'
+import { Routes } from '@/constants';
+import { useClientsOptionsSWR, useClientsSWR } from '@/swr/clientSwr';
 import {
   Input,
   Button,
@@ -9,10 +9,10 @@ import {
   SelectItem,
   Autocomplete,
   AutocompleteItem
-} from "@heroui/react";
+} from '@heroui/react';
 import { Search } from 'lucide-react'
-import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
 
 const tableColumnHeaders = [
   {
@@ -66,35 +66,35 @@ const Clients: React.FC = () => {
 
   const {
     data: clientsData,
-    isLoading: isLoadingClients,
+    isLoading: isLoadingClients
   } = useClientsSWR(filterValues)
 
   const options = useMemo(() => clientOptions ?? { cities: [], clientTypes: [] }, [clientOptions]);
 
   function renderFilters() {
-    return <div className="flex flex-col gap-4 mb-[1.5em]">
-      <div className="flex justify-between gap-3 items-end">
+    return <div className='flex flex-col gap-4 mb-[1.5em]'>
+      <div className='flex justify-between gap-3 items-end'>
         <Input
           isClearable
           classNames={{
-            base: "w-full sm:max-w-[250px]",
-            inputWrapper: "border-1 min-h-[40px]",
+            base: 'w-full sm:max-w-[250px]',
+            inputWrapper: 'border-1 min-h-[40px]'
           }}
-          placeholder="Trazi klijenta..."
-          size="sm"
-          startContent={<Search className="text-default-300" />}
+          placeholder='Trazi klijenta...'
+          size='sm'
+          startContent={<Search className='text-default-300' />}
           value={search}
-          variant="bordered"
+          variant='bordered'
           onClear={() => setSearch('')}
           onValueChange={(value: string) => setSearch(value)}
         />
-        <div className="flex gap-3">
+        <div className='flex gap-3'>
 
           <Autocomplete
-            className="w-[200px]"
+            className='w-[200px]'
             value={filterValues.cityId}
-            aria-label=""
-            placeholder="Odaberite grad"
+            aria-label=''
+            placeholder='Odaberite grad'
             onSelectionChange={(selected) => setFilterValues({
               ...filterValues,
               cityId: selected?.toString() || ''
@@ -107,9 +107,9 @@ const Clients: React.FC = () => {
           </Autocomplete>
 
           <Select
-            className="w-[200px]"
-            aria-label=""
-            placeholder="Izaberi vrstu klijenta"
+            className='w-[200px]'
+            aria-label=''
+            placeholder='Izaberi vrstu klijenta'
             value={filterValues.clientTypeId}
           >
             {options.clientTypes.map((clientType) => (
@@ -128,7 +128,7 @@ const Clients: React.FC = () => {
   }
 
   function renderActions() {
-    return <Button onPress={() => router.push(Routes.CLIENTS_CREATE)} color="primary" size="md">
+    return <Button onPress={() => router.push(Routes.CLIENTS_CREATE)} color='primary' size='md'>
       Dodaj Klijenta
     </Button>
   }
@@ -140,7 +140,7 @@ const Clients: React.FC = () => {
     isLoading={isLoading}
     actions={() => renderActions()}
   >
-    <div className="space-y-8 animate-fade-in w-full">
+    <div className='space-y-8 animate-fade-in w-full'>
       <div>
         {renderFilters()}
         {!isLoading && <TableComp

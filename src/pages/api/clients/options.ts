@@ -1,6 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
-
+import { prisma } from '@/lib/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function clientsOptions(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -12,7 +11,7 @@ export default async function clientsOptions(req: NextApiRequest, res: NextApiRe
 
     return res.status(200).json({
       cities,
-      clientTypes,
+      clientTypes
     });
   } catch (error) {
     console.error('Error fetching clients:', error);

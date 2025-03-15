@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/lib/prisma";
-import { ClientFilterValuesType } from "@/lib/api/clients";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '@/lib/prisma';
+import { ClientFilterValuesType } from '@/lib/api/clients';
 
 export default async function list(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -13,7 +13,7 @@ export default async function list(req: NextApiRequest, res: NextApiResponse) {
     const numberRows = rows ?? 20;
     const numberPage = page ?? 1;
 
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
     const filters: any = {}
 
     if (cityId) {
@@ -48,8 +48,8 @@ export default async function list(req: NextApiRequest, res: NextApiResponse) {
         total: totalClients,
         numberPage,
         numberRows,
-        totalPages: Math.ceil(totalClients / numberRows),
-      },
+        totalPages: Math.ceil(totalClients / numberRows)
+      }
     });
 
   } catch (error) {

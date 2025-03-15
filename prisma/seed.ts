@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables
 
@@ -11,12 +11,12 @@ async function main() {
   const password = process.env.ADMIN_PASSWORD;
 
   if (!email || !password) {
-    console.error("⚠️ ADMIN_EMAIL or ADMIN_PASSWORD is missing from .env file");
+    console.error('⚠️ ADMIN_EMAIL or ADMIN_PASSWORD is missing from .env file');
     process.exit(1);
   }
 
   const existingUser = await prisma.users.findUnique({
-    where: { email },
+    where: { email }
   });
 
   if (!existingUser) {
@@ -25,11 +25,11 @@ async function main() {
     await prisma.users.create({
       data: {
         email,
-        password: hashedPassword,
-      },
+        password: hashedPassword
+      }
     });
   } else {
-    console.log("Super Admin user already exists.");
+    console.log('Super Admin user already exists.');
   }
 }
 

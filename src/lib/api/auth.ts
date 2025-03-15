@@ -1,5 +1,5 @@
-import api from "./http-common";
-import { AxiosResponse } from "axios";
+import api from './http-common';
+import { AxiosResponse } from 'axios';
 
 const login = (data: { email: string, password: string }): ApiClientReturnType<LoginSuccessType> =>
   api.post('/auth/login', data)

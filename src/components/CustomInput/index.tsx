@@ -1,5 +1,5 @@
-import { Input, InputProps } from "@heroui/react";
-import styled from "styled-components";
+import { Input, InputProps } from '@heroui/react';
+import styled from 'styled-components';
 
 const StyledCustomInput = styled(Input)`
 background: white;
@@ -11,9 +11,9 @@ const CustomInput: React.FC<InputProps> = (props) => {
 
   return <StyledCustomInput
     {...props}
-    autoComplete="off"
-    autoCorrect="off"
-    spellCheck="false"
+    autoComplete='off'
+    autoCorrect='off'
+    spellCheck='false'
   />
 }
 export default CustomInput

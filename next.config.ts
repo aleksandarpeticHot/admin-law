@@ -1,16 +1,16 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 /** @type {import('next').NextConfig} */
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
-    styledComponents: true,
+    styledComponents: true
   },
   experimental: {
-    forceSwcTransforms: true,
+    forceSwcTransforms: true
   },
   api: {
-    bodyParser: true,
+    bodyParser: true
   }
 };
 

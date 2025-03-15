@@ -4,6 +4,8 @@ import Loader from '../Loader';
 import Segment from '../Segment';
 import { ArrowLeftCircle } from 'lucide-react';
 import Link from 'next/link';
+import styled from 'styled-components';
+import { Form } from '@heroui/react';
 
 interface Props {
   children: React.ReactNode
@@ -11,7 +13,13 @@ interface Props {
   title: string
   actions?: () => React.ReactNode,
   closeUrl?: string
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
+const StyledWrapper = styled.div`
+position: relative;
+display: block !important;
+`
 
 const PageLayout: React.FC<Props> = (props) => {
   const {
@@ -19,17 +27,18 @@ const PageLayout: React.FC<Props> = (props) => {
     isLoading,
     title,
     actions,
-    closeUrl
+    closeUrl,
+    onSubmit
   } = props
 
   function renderContent() {
     return <div className={cn(
-      "min-h-[70vh]",
-      "flex-1 overflow-auto md:p-10",
-      isLoading ? "opacity-0 transform translate-y-4" : "opacity-100 transform translate-y-0",
-      "transition-all duration-300 ease-in-out"
+      'min-h-[70vh]',
+      'flex-1 overflow-auto md:p-10',
+      isLoading ? 'opacity-0 transform translate-y-4' : 'opacity-100 transform translate-y-0',
+      'transition-all duration-300 ease-in-out'
     )}>
-      <div className="mx-auto w-full">
+      <div className='mx-auto w-full'>
         {children}
       </div>
     </div>
@@ -37,12 +46,12 @@ const PageLayout: React.FC<Props> = (props) => {
 
   function renderHeader() {
     return <header className={cn(
-      "animate-fade-in"
+      'animate-fade-in'
     )}>
       <Segment>
-        <div className="container py-2 px-5 flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold tracking-tight animate-slide-in flex align-baseline gap-[5px]">
+        <div className='container py-2 px-5 flex h-16 items-center justify-between'>
+          <div className='flex items-center gap-3'>
+            <h1 className='text-xl font-semibold tracking-tight animate-slide-in flex align-baseline gap-[5px]'>
               {closeUrl && <Link className='mt-[2px]' href={closeUrl}>
                 <ArrowLeftCircle color='#f31260' />
               </Link>
@@ -50,7 +59,7 @@ const PageLayout: React.FC<Props> = (props) => {
               {title}
             </h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className='flex items-center gap-2'>
             {actions ? actions() : <></>}
           </div>
         </div>
@@ -58,7 +67,11 @@ const PageLayout: React.FC<Props> = (props) => {
     </header>
   }
 
-  return <div>
+  return <StyledWrapper
+    as={onSubmit ? Form : 'div'}
+    onSubmit={onSubmit}
+    autoComplete={'off'}
+  >
     {renderHeader()}
     <div>
       {isLoading && <Loader />}
@@ -66,6 +79,6 @@ const PageLayout: React.FC<Props> = (props) => {
         {renderContent()}
       </Segment>
     </div>
-  </div>
+  </StyledWrapper>
 }
 export default PageLayout

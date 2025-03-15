@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose'
 
-const SECRET_KEY = process.env.JWT_SECRET || "your_super_secret_key";
+const SECRET_KEY = process.env.JWT_SECRET || 'your_super_secret_key';
 const secret = new TextEncoder().encode(SECRET_KEY)
 
 interface LoginRequestBody {

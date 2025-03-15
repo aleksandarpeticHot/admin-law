@@ -1,5 +1,5 @@
-import { ApiClientReturnType } from "./auth";
-import api from "./http-common";
+import { ApiClientReturnType } from './auth';
+import api from './http-common';
 
 const getClients = (filterValues?: ClientFilterValuesType) =>
   api.post('/clients/list', filterValues)

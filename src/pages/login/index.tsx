@@ -1,12 +1,12 @@
-import { Button, Form } from "@heroui/react";
-import { LoginEl } from "./style";
-import CustomInput from "@/components/CustomInput";
-import { useState } from "react";
-import { notify } from "../lib/notify";
-import { useRouter } from "next/router";
-import { Routes } from "@/constants";
-import { AuthService } from "@/lib/api/auth";
-import { AxiosError } from "axios";
+import { Button, Form } from '@heroui/react';
+import { LoginEl } from './style';
+import CustomInput from '@/components/CustomInput';
+import { useState } from 'react';
+import { notify } from '../lib/notify';
+import { useRouter } from 'next/router';
+import { Routes } from '@/constants';
+import { AuthService } from '@/lib/api/auth';
+import { AxiosError } from 'axios';
 
 type LoginPayload = {
   email: string
@@ -24,21 +24,21 @@ const Login = () => {
       notify('Success', 'success', 'Successfully logged in')
       router.push(Routes.DASHBOARD)
     } catch (error: unknown) {
-      let errorMessage = "An unexpected error occurred";
+      let errorMessage = 'An unexpected error occurred';
 
       if (error instanceof AxiosError) {
         errorMessage = error.response?.data?.message || errorMessage;
       }
 
-      notify('Error', "danger", errorMessage);
+      notify('Error', 'danger', errorMessage);
     }
     setIsLoading(false)
   }
 
   function renderLoginForm() {
     return <Form
-      autoComplete="off"
-      className="w-full max-w-xs flex flex-col gap-4 p-[20px] min-w-[400px]"
+      autoComplete='off'
+      className='w-full max-w-xs flex flex-col gap-4 p-[20px] min-w-[400px]'
       onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -48,37 +48,37 @@ const Login = () => {
         handleSubmit(data);
       }}
     >
-      <div className="text-center w-full">
-        <LoginEl.LogoContainer style={{ backgroundImage: `url('/radusinovic.jpg')` }} />
+      <div className='text-center w-full'>
+        <LoginEl.LogoContainer style={{ backgroundImage: 'url(\'/radusinovic.jpg\')' }} />
         <LoginEl.Title>{'Radusinović'}</LoginEl.Title>
       </div>
       <LoginEl.FormHeading>{'Sign in'}</LoginEl.FormHeading>
       <CustomInput
         isRequired
-        errorMessage="Please enter a valid email"
-        label="Email"
-        name="email"
+        errorMessage='Please enter a valid email'
+        label='Email'
+        name='email'
         disabled={isLoading}
-        type="email"
-        variant="bordered"
-        placeholder="Enter email"
+        type='email'
+        variant='bordered'
+        placeholder='Enter email'
       />
       <CustomInput
         isRequired
-        errorMessage="Please enter a password"
-        label="Password"
+        errorMessage='Please enter a password'
+        label='Password'
         disabled={isLoading}
-        type="password"
-        name="password"
-        variant="bordered"
-        placeholder="Enter password"
+        type='password'
+        name='password'
+        variant='bordered'
+        placeholder='Enter password'
       />
-      <div className="flex gap-[10px] justify-end w-full">
+      <div className='flex gap-[10px] justify-end w-full'>
         <Button
           isLoading={isLoading}
-          variant="shadow"
-          color="primary"
-          type="submit">
+          variant='shadow'
+          color='primary'
+          type='submit'>
           {'Login'}
         </Button>
       </div>

@@ -11,17 +11,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const shouldHideLayout = router.pathname.includes(Routes.LOGIN)
 
   function renderLayoutWithChildren() {
-    return <div className="min-h-screen flex flex-col">
-      <div className="flex flex-1 overflow-hidden">
+    return <div className='min-h-screen flex flex-col'>
+      <div className='flex flex-1 overflow-hidden'>
         <Sidebar />
-        <div className="flex flex-col flex-1 w-full overflow-hidden">
+        <div className='flex flex-col flex-1 w-full overflow-hidden'>
           <Topbar />
           <main className={cn(
-            "flex-1 overflow-auto md:p-5",
-            "bg-gray-100 shadow-sm",
-            "transition-all duration-300 ease-in-out"
+            'flex-1 overflow-auto md:p-5',
+            'bg-gray-100 shadow-sm',
+            'transition-all duration-300 ease-in-out'
           )}>
-            <div className="mx-auto w-full">
+            <div className='mx-auto w-full'>
               {children}
             </div>
           </main>

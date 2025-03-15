@@ -26,9 +26,9 @@ const Topbar: React.FC = () => {
   }
 
   return (
-    <header className="flex items-center justify-between h-16 px-6 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center gap-4">
-        <div className="relative max-w-md w-full hidden md:flex">
+    <header className='flex items-center justify-between h-16 px-6 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+      <div className='flex items-center gap-4'>
+        <div className='relative max-w-md w-full hidden md:flex'>
           {/*  <Input
             isClearable
             classNames={{
@@ -45,32 +45,32 @@ const Topbar: React.FC = () => {
           /> */}
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <Dropdown placement="bottom-start">
+      <div className='flex items-center gap-4'>
+        <Dropdown placement='bottom-start'>
           <DropdownTrigger>
             <User
-              as="button"
+              as='button'
               avatarProps={{
                 isBordered: true,
-                src: "/rakic.png",
+                src: '/rakic.png'
               }}
-              className="transition-transform"
-              description="@rakic.gmail.com"
-              name="Rakic Nikola"
+              className='transition-transform'
+              description='@rakic.gmail.com'
+              name='Rakic Nikola'
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="User Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-bold">Signed in as Rakic</p>
-              <p className="font-bold">@rakic.gmail.com</p>
+          <DropdownMenu aria-label='User Actions' variant='flat'>
+            <DropdownItem key='profile' className='h-14 gap-2'>
+              <p className='font-bold'>Signed in as Rakic</p>
+              <p className='font-bold'>@rakic.gmail.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem key='settings'>My Settings</DropdownItem>
+            <DropdownItem key='analytics'>Analytics</DropdownItem>
+            <DropdownItem key='help_and_feedback'>Help & Feedback</DropdownItem>
             <DropdownItem
               onPress={() => handleLogout()}
-              key="logout"
-              color="danger"
+              key='logout'
+              color='danger'
             >
               Log Out
             </DropdownItem>

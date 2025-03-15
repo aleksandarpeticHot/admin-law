@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -6,11 +6,11 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Pagination,
-} from "@heroui/react";
+  Pagination
+} from '@heroui/react';
 
 export function capitalize(s: string) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
+  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '';
 }
 
 type TableColumHeaderType = {
@@ -37,7 +37,7 @@ const TableComp: React.FC<Props> = (props) => {
 
   function renderCell(value: string) {
     return <div
-      className={"text-default-500"}
+      className={'text-default-500'}
     >
       {value}
     </div>
@@ -45,17 +45,17 @@ const TableComp: React.FC<Props> = (props) => {
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
+      <div className='py-2 px-2 flex justify-between items-center'>
         <Pagination
           showControls
           classNames={{
-            cursor: "bg-foreground text-background",
+            cursor: 'bg-foreground text-background'
           }}
-          color="default"
+          color='default'
           isDisabled={false}
           page={page}
           total={rows.length}
-          variant="light"
+          variant='light'
           onChange={setPage}
         />
       </div>
@@ -64,34 +64,34 @@ const TableComp: React.FC<Props> = (props) => {
 
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-[382px]", "max-w-3xl"],
-      th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+      wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
       td: [
         // changing the rows border radius
         // first
-        "group-data-[first=true]/tr:first:before:rounded-none",
-        "group-data-[first=true]/tr:last:before:rounded-none",
+        'group-data-[first=true]/tr:first:before:rounded-none',
+        'group-data-[first=true]/tr:last:before:rounded-none',
         // middle
-        "group-data-[middle=true]/tr:before:rounded-none",
+        'group-data-[middle=true]/tr:before:rounded-none',
         // last
-        "group-data-[last=true]/tr:first:before:rounded-none",
-        "group-data-[last=true]/tr:last:before:rounded-none",
-      ],
+        'group-data-[last=true]/tr:first:before:rounded-none',
+        'group-data-[last=true]/tr:last:before:rounded-none'
+      ]
     }),
-    [],
+    []
   );
 
   return (
     <Table
       isCompact
       removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label='Example table with custom cells, pagination and sorting'
       bottomContent={bottomContent}
-      bottomContentPlacement="outside"
+      bottomContentPlacement='outside'
       checkboxesProps={{
         classNames: {
-          wrapper: "after:bg-foreground after:text-background text-background",
-        },
+          wrapper: 'after:bg-foreground after:text-background text-background'
+        }
       }}
       classNames={classNames}
     >
@@ -99,14 +99,14 @@ const TableComp: React.FC<Props> = (props) => {
         {(column) => (
           <TableColumn
             key={column?.key || `actions${Math.random}`}
-            align={"center"}
-            className="text-sm"
+            align={'center'}
+            className='text-sm'
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={noResultsMessage ?? "No users found"}>
+      <TableBody emptyContent={noResultsMessage ?? 'No users found'}>
         {rows.map((row: RowType) => {
           return <TableRow key={row?.id}>
             {tableColumnHeaders.map((column) => {
