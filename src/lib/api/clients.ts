@@ -7,6 +7,9 @@ const getClients = (filterValues?: ClientFilterValuesType) =>
 const getClientOptions = (): ApiClientReturnType<ClientOptionsType> =>
   api.get('/clients/options')
 
+const createClient = (data: ClientStoreType) =>
+  api.post('/clients/create', data)
+
 export type ClientFilterValuesType = {
   rows: number,
   page: number,
@@ -16,7 +19,8 @@ export type ClientFilterValuesType = {
 
 export const ClientService = {
   getClients,
-  getClientOptions
+  getClientOptions,
+  createClient
 }
 
 export type OptionType = {
@@ -28,4 +32,18 @@ export type ClientOptionsType = {
   cities: OptionType[],
   clientTypes: OptionType[]
 }
+
+export type ClientStoreType = {
+  name: string;
+  state: string;
+  cityId: number;
+  street: string;
+  uniqueId: string;
+  phoneNumber: string;
+  fax?: string | null;
+  bankAccountNumber?: string | null;
+  contact?: string | null;
+  clientTypeId: number;
+  description?: string | null;
+};
 

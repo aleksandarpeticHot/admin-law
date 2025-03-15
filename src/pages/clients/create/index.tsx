@@ -1,27 +1,24 @@
 import { FormFields } from '@/components/FormFields'
 import PageLayout from '@/components/PageLayout'
 import { Routes } from '@/constants'
+import { ClientService, ClientStoreType } from '@/lib/api/clients'
+import { notify } from '@/pages/lib/notify'
 import { useClientsOptionsSWR } from '@/swr/clientSwr'
 import { Button, SelectItem } from '@heroui/react'
-import { Building2, IdCard } from 'lucide-react'
+import { Building2, IdCard, Flag, MapPinHouse, Phone } from 'lucide-react'
+import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
-type FormValues = {
-  name: string,
-  clientTypeId: number,
-  uniqueId: string
-  bankAccountNumber: string | null
-}
-
 const Create = () => {
+  const router = useRouter()
 
   const {
     data: clientOptions,
     isLoading: isLoadingOptions
   } = useClientsOptionsSWR()
 
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit, watch } = useForm<ClientStoreType>({
     mode: 'onSubmit',
     defaultValues: {
       name: '',
@@ -168,11 +165,186 @@ const Create = () => {
           }
         />
       </div>
+      <div className='flex align-centar gap-[20px]'>
+        <FormFields.Input
+          control={control}
+          label='Drzava'
+          rules={{
+            required: {
+              value: true,
+              message: 'Molimo unesite drzavu'
+            },
+            maxLength: {
+              value: 200,
+              message: 'Max. broj karaktera je 200!'
+            }
+          }}
+          name='state'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          labelPlacement='outside'
+          placeholder='e.g. Bosna i Hercegovina'
+          variant='bordered'
+          startContent={
+            <Flag />
+          }
+        />
+        <FormFields.Select
+          label='Grad'
+          control={control}
+          name={'cityId'}
+          rules={{
+            required: {
+              value: true,
+              message: 'Molimo izaberite grad!'
+            }
+          }}
+          aria-label=''
+          labelPlacement='outside'
+          classNames={{
+            innerWrapper: [
+              'w-[50%]'
+            ],
+            label: ['!text-black']
+          }}
+          variant='bordered'
+          placeholder='Izaberite grad'
+        >
+          {options.cities.map((city) => (
+            <SelectItem
+              key={city.id}
+            >{city.text}</SelectItem>
+          ))}
+        </FormFields.Select>
+      </div>
+      <div className='flex align-centar gap-[20px]'>
+        <FormFields.Input
+          control={control}
+          label='Ulica'
+          rules={{
+            required: {
+              value: true,
+              message: 'Molimo unesite ulicu'
+            },
+            maxLength: {
+              value: 200,
+              message: 'Max. broj karaktera je 200!'
+            }
+          }}
+          name='street'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          labelPlacement='outside'
+          placeholder='e.g. Zivojina Misica 35'
+          variant='bordered'
+          startContent={
+            <MapPinHouse />
+          }
+        />
+        <FormFields.Input
+          control={control}
+          label='Telefon'
+          rules={{
+            required: {
+              value: true,
+              message: 'Molimo unesite telefon'
+            },
+            maxLength: {
+              value: 150,
+              message: 'Max. broj karaktera je 150!'
+            }
+          }}
+          name='phoneNumber'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          labelPlacement='outside'
+          placeholder='e.g. 065-221-333'
+          variant='bordered'
+          startContent={
+            <Phone />
+          }
+        />
+      </div>
+      <div className='flex align-centar gap-[20px]'>
+        <FormFields.Input
+          control={control}
+          label='Faks'
+          rules={{
+            maxLength: {
+              value: 150,
+              message: 'Max. broj karaktera je 150!'
+            }
+          }}
+          name='fax'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          labelPlacement='outside'
+          placeholder='e.g. 11222'
+          variant='bordered'
+          startContent={
+            <Phone />
+          }
+        />
+        <FormFields.Input
+          control={control}
+          label='Kontact'
+          rules={{
+            maxLength: {
+              value: 150,
+              message: 'Max. broj karaktera je 150!'
+            }
+          }}
+          name='contact'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          labelPlacement='outside'
+          placeholder='e.g. 065-221-333'
+          variant='bordered'
+          startContent={
+            <Phone />
+          }
+        />
+      </div>
+      <div className='flex align-centar gap-[20px]'>
+        <FormFields.Textarea
+          name={'description'}
+          control={control}
+          placeholder={'Unesite Opis'}
+          variant='bordered'
+          classNames={{
+            innerWrapper: ['w-[50%]'],
+            label: ['!text-black']
+          }}
+          label='Opis'
+          rules={{
+            maxLength: {
+              value: 1000,
+              message: 'Max. broj karaktera je 1000!'
+            }
+          }}
+        />
+      </div>
     </>
   }
 
-  async function onSubmit(data: unknown) {
-    console.log(data)
+  async function onSubmit(data: ClientStoreType) {
+    try {
+      await ClientService.createClient(data)
+      notify('Uspjeh', 'success', 'Uspjesno ste kreirali klijenta')
+      router.push(Routes.CLIENTS)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   function renderActions() {
