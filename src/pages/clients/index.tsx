@@ -1,6 +1,6 @@
 import TableComp from "@/components/TableComp"
 import { Routes } from "@/constants";
-import { ClientOptionsType, ClientService } from "@/lib/api/clients";
+import { useClientsOptionsSWR, useClientsSWR } from "@/swr/clientSwr";
 import {
   Input,
   Button,
@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { Search } from 'lucide-react'
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 const tableColumnHeaders = [
   {
@@ -53,38 +53,25 @@ const Clients: React.FC = () => {
   const [filterValues, setFilterValues] = useState({
     rows: 20,
     page: 1,
-    clientType: '',
-    city: ''
+    clientTypeId: '',
+    cityId: ''
   })
   const [search, setSearch] = useState('')
-  const [clients, setClients] = useState([])
-  const [options, setOptions] = useState<ClientOptionsType>({
-    cities: [],
-    clientTypes: []
-  })
 
-  useEffect(() => {
-    fetchClients()
-  }, [])
+  const {
+    data: clientOptions,
+    isLoading: isLoadingOptions
+  } = useClientsOptionsSWR()
 
-  useEffect(() => {
-    fetchClients()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterValues])
+  const {
+    data: clientsData,
+    isLoading: isLoadingClients,
+  } = useClientsSWR(filterValues)
 
-  async function fetchClients() {
-    try {
-      const response = await ClientService.getClients({ ...filterValues })
-      const responseOptions = await ClientService.getClientOptions()
-      setClients(response.data.data)
-      setOptions(responseOptions.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const options = useMemo(() => clientOptions ?? { cities: [], clientTypes: [] }, [clientOptions]);
 
   function renderFilters() {
-    return <div className="flex flex-col gap-4">
+    return <div className="flex flex-col gap-4 mb-[1.5em]">
       <div className="flex justify-between gap-3 items-end">
         <Input
           isClearable
@@ -104,16 +91,16 @@ const Clients: React.FC = () => {
 
           <Autocomplete
             className="w-[200px]"
-            value={filterValues.city}
+            value={filterValues.cityId}
             aria-label=""
             placeholder="Odaberite grad"
+            onSelectionChange={(selected) => setFilterValues({
+              ...filterValues,
+              cityId: selected?.toString() || ''
+            })}
           >
             {options.cities.map((city) => (
               <AutocompleteItem
-                onPress={() => setFilterValues({
-                  ...filterValues,
-                  city: city.id
-                })}
                 key={city.id}>{city.text}</AutocompleteItem>
             ))}
           </Autocomplete>
@@ -121,16 +108,15 @@ const Clients: React.FC = () => {
           <Select
             className="w-[200px]"
             aria-label=""
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => console.log(event.currentTarget)}
             placeholder="Izaberi vrstu klijenta"
-            value={filterValues.clientType}
+            value={filterValues.clientTypeId}
           >
             {options.clientTypes.map((clientType) => (
               <SelectItem
                 key={clientType.id}
                 onPress={() => setFilterValues({
                   ...filterValues,
-                  clientType: clientType.id
+                  clientTypeId: clientType.id
                 })}
               >{clientType.text}</SelectItem>
             ))}
@@ -141,42 +127,20 @@ const Clients: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="flex justify-between items-center">
-        <span className="text-default-400 text-small">Total {clients.length} klijenata</span>
-        <label className="flex items-center text-default-400 text-small">
-          Redova po stranici:
-          <select
-            className="bg-transparent outline-none text-default-400 text-small"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterValues({
-              ...filterValues,
-              rows: parseInt(e.currentTarget.value, 10)
-            })}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-          </select>
-        </label>
-      </div>
     </div>
   }
 
-  function renderActions() {
-    return <>
-    </>
-  }
+  const isLoading = isLoadingClients || isLoadingOptions
 
   return <div className="space-y-8 animate-fade-in w-full">
     <div>
       {renderFilters()}
-      {renderActions()}
-      <TableComp
+      {!isLoading && <TableComp
         tableColumnHeaders={tableColumnHeaders}
-        rows={clients}
+        rows={clientsData?.data || []}
         page={filterValues.page}
         noResultsMessage={'Lista klijenata je prazna.'}
-      />
+      />}
     </div>
   </div>
 }

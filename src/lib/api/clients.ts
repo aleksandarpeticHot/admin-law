@@ -1,15 +1,17 @@
 import { ApiClientReturnType } from "./auth";
 import api from "./http-common";
 
-const getClients = (filterValues?: FilterValues) =>
+const getClients = (filterValues?: ClientFilterValuesType) =>
   api.post('/clients/list', filterValues)
 
 const getClientOptions = (): ApiClientReturnType<ClientOptionsType> =>
   api.get('/clients/options')
 
-type FilterValues = {
+export type ClientFilterValuesType = {
   rows: number,
-  page: number
+  page: number,
+  cityId: string,
+  clientTypeId: string
 }
 
 export const ClientService = {

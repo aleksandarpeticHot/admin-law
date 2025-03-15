@@ -4,6 +4,7 @@ import { HeroUIProvider, } from "@heroui/react";
 import { ThemeProvider, createGlobalStyle, DefaultTheme } from "styled-components";
 import { ToastProvider } from "@heroui/toast";
 import Layout from "@/components/Layout";
+import { SWRConfig } from 'swr';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -43,9 +44,11 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <SWRConfig value={{ dedupingInterval: 5000, revalidateOnFocus: false }}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SWRConfig>
       </ThemeProvider>
     </HeroUIProvider>
   );
