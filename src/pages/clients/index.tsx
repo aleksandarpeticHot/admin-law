@@ -1,3 +1,4 @@
+import PageLayout from "@/components/PageLayout";
 import TableComp from "@/components/TableComp"
 import { Routes } from "@/constants";
 import { useClientsOptionsSWR, useClientsSWR } from "@/swr/clientSwr";
@@ -77,7 +78,7 @@ const Clients: React.FC = () => {
           isClearable
           classNames={{
             base: "w-full sm:max-w-[250px]",
-            inputWrapper: "border-1",
+            inputWrapper: "border-1 min-h-[40px]",
           }}
           placeholder="Trazi klijenta..."
           size="sm"
@@ -121,27 +122,35 @@ const Clients: React.FC = () => {
               >{clientType.text}</SelectItem>
             ))}
           </Select>
-
-          <Button onPress={() => router.push(Routes.CLIENTS_CREATE)} color="primary" size="md">
-            Dodaj Klijenta
-          </Button>
         </div>
       </div>
     </div>
   }
 
+  function renderActions() {
+    return <Button onPress={() => router.push(Routes.CLIENTS_CREATE)} color="primary" size="md">
+      Dodaj Klijenta
+    </Button>
+  }
+
   const isLoading = isLoadingClients || isLoadingOptions
 
-  return <div className="space-y-8 animate-fade-in w-full">
-    <div>
-      {renderFilters()}
-      {!isLoading && <TableComp
-        tableColumnHeaders={tableColumnHeaders}
-        rows={clientsData?.data || []}
-        page={filterValues.page}
-        noResultsMessage={'Lista klijenata je prazna.'}
-      />}
+  return <PageLayout
+    title={'Klijenti'}
+    isLoading={isLoading}
+    actions={() => renderActions()}
+  >
+    <div className="space-y-8 animate-fade-in w-full">
+      <div>
+        {renderFilters()}
+        {!isLoading && <TableComp
+          tableColumnHeaders={tableColumnHeaders}
+          rows={clientsData?.data || []}
+          page={filterValues.page}
+          noResultsMessage={'Lista klijenata je prazna.'}
+        />}
+      </div>
     </div>
-  </div>
+  </PageLayout>
 }
 export default Clients

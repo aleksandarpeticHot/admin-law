@@ -4,24 +4,11 @@ import Sidebar from './Sidebar';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { Routes } from '@/constants';
-import { useEffect, useState } from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
-  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
-  const [displayedChildren, setDisplayedChildren] = useState(children);
-
   const shouldHideLayout = router.pathname.includes(Routes.LOGIN)
-
-  useEffect(() => {
-    setIsPageTransitioning(true);
-    const timer = setTimeout(() => {
-      setDisplayedChildren(children);
-      setIsPageTransitioning(false);
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [children])
 
   function renderLayoutWithChildren() {
     return <div className="min-h-screen flex flex-col">
@@ -30,12 +17,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col flex-1 w-full overflow-hidden">
           <Topbar />
           <main className={cn(
-            "flex-1 overflow-auto md:p-10",
-            isPageTransitioning ? "opacity-0 transform translate-y-4" : "opacity-100 transform translate-y-0",
+            "flex-1 overflow-auto md:p-5",
+            "bg-gray-100 shadow-sm",
             "transition-all duration-300 ease-in-out"
           )}>
             <div className="mx-auto w-full">
-              {displayedChildren}
+              {children}
             </div>
           </main>
         </div>
@@ -44,7 +31,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (shouldHideLayout) {
-    return <main>{displayedChildren}</main>
+    return <main>{children}</main>
   }
 
   return renderLayoutWithChildren()

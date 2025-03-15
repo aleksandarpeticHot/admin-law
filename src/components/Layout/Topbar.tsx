@@ -1,12 +1,10 @@
 
 import React from 'react';
-import { Search } from 'lucide-react';
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   User
 } from '@heroui/react';
 import { AuthService } from '@/lib/api/auth';
@@ -31,7 +29,7 @@ const Topbar: React.FC = () => {
     <header className="flex items-center justify-between h-16 px-6 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-4">
         <div className="relative max-w-md w-full hidden md:flex">
-          <Input
+          {/*  <Input
             isClearable
             classNames={{
               inputWrapper: [
@@ -44,7 +42,7 @@ const Topbar: React.FC = () => {
             startContent={
               <Search className="text-black/50 mb-0.5 text-slate-400 pointer-events-none flex-shrink-0" />
             }
-          />
+          /> */}
         </div>
       </div>
       <div className="flex items-center gap-4">

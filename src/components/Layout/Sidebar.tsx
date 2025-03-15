@@ -5,13 +5,13 @@ import {
   Briefcase,
   Users,
   Home,
-  BarChart4,
   Calendar,
   FileText,
   Settings
 } from 'lucide-react';
 import { Image } from '@heroui/react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 
 interface NavItemProps {
@@ -23,10 +23,10 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ icon: Icon, href, label }) => {
   const router = useRouter();
-  const isActive = router.pathname === href;
+  const isActive = router.pathname.includes(href);
 
   return (
-    <a
+    <Link
       href={href}
       className={cn(
         "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200",
@@ -40,7 +40,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, href, label }) => {
         <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
       </div>
       <span className="group-hover:text-primary transition-colors">{label}</span>
-    </a>
+    </Link>
   );
 };
 
@@ -74,11 +74,11 @@ const Sidebar: React.FC = () => {
         <nav className="flex-1 py-4 px-2 overflow-y-auto scrollbar-thin min-w-[220px]">
           <div className="space-y-1">
             <NavItem icon={Home} href="/dashboard" label="Dashboard" />
-            <NavItem icon={Users} href="/clients" label="Clients" />
-            <NavItem icon={Briefcase} href="/projects" label="Projects" />
-            <NavItem icon={Calendar} href="/calendar" label="Calendar" />
-            <NavItem icon={FileText} href="/documents" label="Documents" />
-            <NavItem icon={BarChart4} href="/analytics" label="Analytics" />
+            <NavItem icon={Users} href="/clients" label="Klijenti" />
+            <NavItem icon={Briefcase} href="/projects" label="Projekti" />
+            <NavItem icon={Calendar} href="/calendar" label="Kalendar" />
+            <NavItem icon={FileText} href="/documents" label="Dokumenti" />
+            {/*  <NavItem icon={BarChart4} href="/analytics" label="Analytics" /> */}
           </div>
         </nav>
 
