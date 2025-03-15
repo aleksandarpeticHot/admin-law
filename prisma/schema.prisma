@@ -18,18 +18,18 @@ model cities {
   id    Int      @id @default(autoincrement())
   text  String   @db.VarChar(50)
 
-  clients clients[]  // Back-relation (One-to-Many)
+  Client Client[]  // Back-relation (One-to-Many)
 }
 
 model client_types {
   id    Int      @id @default(autoincrement())
   text  String   @db.VarChar(50)
 
-  clients clients[]  // Back-relation (One-to-Many)
+  Client Client[]  // Back-relation (One-to-Many)
 }
 
-model clients {
-  id                  Int      @id @default(autoincrement())
+model Client {
+  id                  String  @id @default(cuid())
   name                String   @db.VarChar(150)
   state               String   @db.VarChar(200)
   city_id             Int
@@ -44,4 +44,5 @@ model clients {
 
   city           cities     @relation(fields: [city_id], references: [id]) 
   clientType     client_types @relation(fields: [client_type_id], references: [id]) 
+  @@map("clients") 
 }

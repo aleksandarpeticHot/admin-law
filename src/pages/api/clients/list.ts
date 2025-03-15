@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
+import { ClientFilterValuesType } from "@/lib/api/clients";
 
 export default async function list(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -7,19 +8,37 @@ export default async function list(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    let { rows, page } = req.body;
+    const { rows, page, cityId, clientTypeId }: ClientFilterValuesType = req.body;
 
-    rows = rows ? parseInt(rows, 10) : 20;
-    page = page ? parseInt(page, 10) : 1;
+    const numberRows = rows ?? 20;
+    const numberPage = page ?? 1;
 
-    const totalClients = await prisma.clients.count();
+    // eslint-disable-next-line 
+    const filters: any = {}
 
-    const skip = (page - 1) * rows;
-    const take = rows;
+    if (cityId) {
+      filters.city_id = parseInt(cityId, 10)
+    }
 
-    const clients = await prisma.clients.findMany({
+    if (req.body?.clientTypeId) {
+      filters.client_type_id = parseInt(clientTypeId, 10)
+    }
+
+    const totalClients = await prisma.client.count({
+      where: filters
+    });
+
+    const skip = (numberPage - 1) * numberRows;
+    const take = numberRows;
+
+    const clients = await prisma.client.findMany({
+      where: filters,
       skip,
-      take
+      take,
+      include: {
+        city: true,
+        clientType: true
+      }
     });
 
     return res.status(200).json({
@@ -27,9 +46,9 @@ export default async function list(req: NextApiRequest, res: NextApiResponse) {
       data: clients || [],
       pagination: {
         total: totalClients,
-        page,
-        rows,
-        totalPages: Math.ceil(totalClients / rows),
+        numberPage,
+        numberRows,
+        totalPages: Math.ceil(totalClients / numberRows),
       },
     });
 
