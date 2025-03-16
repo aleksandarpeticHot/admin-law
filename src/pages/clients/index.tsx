@@ -1,5 +1,5 @@
 import PageLayout from '@/components/PageLayout';
-import TableComp from '@/components/TableComp'
+import TableComp, { ActionColumnType } from '@/components/TableComp'
 import { Routes } from '@/constants';
 import { useClientsOptionsSWR, useClientsSWR } from '@/swr/clientSwr';
 import {
@@ -25,7 +25,7 @@ const tableColumnHeaders = [
   },
   {
     name: 'Grad',
-    key: 'cityId'
+    key: 'city'
   },
   {
     name: 'Ulica',
@@ -33,7 +33,7 @@ const tableColumnHeaders = [
   },
   {
     name: 'Telefon',
-    key: 'telefon'
+    key: 'phoneNumber'
   },
   {
     name: 'JMBG/JIB',
@@ -41,10 +41,19 @@ const tableColumnHeaders = [
   },
   {
     name: 'Tip klijenta',
-    key: 'clientTypeId'
+    key: 'clientType'
   },
   {
     name: 'Akcije'
+  }
+]
+
+const actions: ActionColumnType[] = [
+  {
+    popupMessage: 'Edit klijenta',
+    name: 'pencil',
+    link: Routes.CLIENT_EDIT,
+    type: 'link'
   }
 ]
 
@@ -148,6 +157,7 @@ const Clients: React.FC = () => {
           rows={clientsData?.data || []}
           page={filterValues.page}
           noResultsMessage={'Lista klijenata je prazna.'}
+          actions={actions}
         />}
       </div>
     </div>

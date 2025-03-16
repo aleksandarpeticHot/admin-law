@@ -3,5 +3,6 @@ export const Routes = {
   USERS: '/users',
   DASHBOARD: '/dashboard',
   CLIENTS: '/clients',
-  CLIENTS_CREATE: '/clients/create'
+  CLIENTS_CREATE: '/clients/create',
+  CLIENT_EDIT: '/clients/:id'
 }

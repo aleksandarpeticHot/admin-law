@@ -2,6 +2,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { ClientFilterValuesType } from '@/lib/api/clients';
 
+// eslint-disable-next-line
+const toCamelCase = <T extends Record<string, any>>(obj: T): T => {
+  if (!obj || typeof obj !== 'object') return obj;
+
+  return Object.keys(obj).reduce((acc, key) => {
+    const camelKey = key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
+    // eslint-disable-next-line
+    (acc as Record<string, any>)[camelKey] = obj[key];
+    return acc;
+  }, {} as T);
+};
+
 export default async function list(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed', message: 'Only POST requests are allowed.' });
@@ -41,9 +53,15 @@ export default async function list(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
+    const formattedClients = clients.map(client => ({
+      ...toCamelCase(client),
+      city: client.city?.text || null,
+      clientType: client.clientType?.text || null
+    }));
+
     return res.status(200).json({
       success: true,
-      data: clients || [],
+      data: formattedClients || [],
       pagination: {
         total: totalClients,
         numberPage,

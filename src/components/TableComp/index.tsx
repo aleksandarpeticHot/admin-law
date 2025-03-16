@@ -6,8 +6,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Pagination
+  Pagination,
+  Tooltip
 } from '@heroui/react';
+import Link from 'next/link';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
+
+type LucideIconName = keyof typeof dynamicIconImports;
 
 export function capitalize(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '';
@@ -23,15 +29,31 @@ type RowType = {
   [key: string]: string;
 }
 
+export type ActionColumnType = {
+  popupMessage: string | React.ReactNode
+  type: string,
+  name: LucideIconName,
+  size?: string,
+  link?: string
+}
+
 interface Props {
   tableColumnHeaders: TableColumHeaderType[]
   rows: RowType[]
   page: number
   noResultsMessage?: string
+  actions?: ActionColumnType[]
+  handleClickAction?: (row: RowType, type: string) => void,
 }
 
 const TableComp: React.FC<Props> = (props) => {
-  const { tableColumnHeaders, rows, noResultsMessage } = props
+  const {
+    tableColumnHeaders,
+    rows,
+    noResultsMessage,
+    actions,
+    handleClickAction
+  } = props
 
   const [page, setPage] = React.useState(props.page);
 
@@ -81,6 +103,42 @@ const TableComp: React.FC<Props> = (props) => {
     []
   );
 
+  function renderLinkAction(action: ActionColumnType, row: RowType) {
+    return <Tooltip
+      content={action.popupMessage}
+      key={`${row.id}-${action.name}`}
+    >
+      <Link className='cursor-pointer' href={action.link?.replace(':id', row.id) as string}>
+        <DynamicIcon
+          color='#006FEE'
+          size={20}
+          name={action.name}
+        />
+      </Link>
+    </Tooltip>
+  }
+
+  function renderActionCell(row: RowType) {
+    return actions?.map((action: ActionColumnType) => {
+      if (action.link) {
+        return renderLinkAction(action, row)
+      }
+      return <Tooltip
+        key={`${row.id}-${action.name}`}
+        content={action.popupMessage}
+      >
+        <DynamicIcon
+          color='#006FEE'
+          onClick={() => {
+            if (handleClickAction) {
+              handleClickAction(row, action.type)
+            }
+          }}
+          name={action.name} />
+      </Tooltip>
+    })
+  }
+
   return (
     <Table
       isCompact
@@ -114,8 +172,8 @@ const TableComp: React.FC<Props> = (props) => {
                 const cellValue = row[column.key as keyof RowType];
                 return <TableCell key={`${column.key}${row.id}`}>{renderCell(cellValue)}</TableCell>
               } else {
-                return <TableCell key={`actions${row.id}`}>
-                  <></>
+                return <TableCell key={`actions${row.id}`} className='flex align-center justify-center'>
+                  {renderActionCell(row)}
                 </TableCell>
               }
             })}
