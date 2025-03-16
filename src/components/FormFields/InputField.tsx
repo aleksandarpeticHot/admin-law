@@ -20,11 +20,12 @@ const InputField: React.FC<InputFieldProps> = (props) => {
       {...field}
       {...inputProps}
       id={name}
-      className='mt-[1em] mb-[2em]'
+      className={props.className || 'mt-[1em] mb-[2em]'}
       classNames={{
         ...inputProps.classNames,
         helperWrapper: ['absolute top-[35px]']
       }}
+      value={field.value || ''}
       errorMessage={fieldState.error?.message}
       isInvalid={Boolean(fieldState.error)}
       onValueChange={(value) => field.onChange(value)}

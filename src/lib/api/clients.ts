@@ -10,6 +10,12 @@ const getClientOptions = (): ApiClientReturnType<ClientOptionsType> =>
 const createClient = (data: ClientStoreType) =>
   api.post('/clients/create', data)
 
+const getClient = (id: string): ApiClientReturnType<ClientEditType> =>
+  api.get(`/clients/${id}`)
+
+const updateClient = (id: string, data: Partial<ClientEditType>): ApiClientReturnType<void> =>
+  api.put(`/clients/update/${id}`, data)
+
 export type ClientFilterValuesType = {
   rows: number,
   page: number,
@@ -20,7 +26,9 @@ export type ClientFilterValuesType = {
 export const ClientService = {
   getClients,
   getClientOptions,
-  createClient
+  createClient,
+  getClient,
+  updateClient
 }
 
 export type OptionType = {
@@ -46,4 +54,6 @@ export type ClientStoreType = {
   clientTypeId: number;
   description?: string | null;
 };
+
+export type ClientEditType = ClientStoreType & { id: number };
 

@@ -25,6 +25,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
         ...textareaProps.classNames,
         helperWrapper: ['absolute top-[35px]']
       }}
+      value={field.value || ''}
       errorMessage={fieldState.error?.message}
       isInvalid={Boolean(fieldState.error)}
       onValueChange={(value) => field.onChange(value)}

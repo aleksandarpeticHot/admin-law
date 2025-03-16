@@ -75,9 +75,9 @@ const PageLayout: React.FC<Props> = (props) => {
     {renderHeader()}
     <div>
       {isLoading && <Loader />}
-      <Segment className='p-[20px]'>
+      {!isLoading && <Segment className='p-[20px]'>
         {renderContent()}
-      </Segment>
+      </Segment>}
     </div>
   </StyledWrapper>
 }

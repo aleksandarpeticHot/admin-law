@@ -1,18 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { ClientFilterValuesType } from '@/lib/api/clients';
-
-// eslint-disable-next-line
-const toCamelCase = <T extends Record<string, any>>(obj: T): T => {
-  if (!obj || typeof obj !== 'object') return obj;
-
-  return Object.keys(obj).reduce((acc, key) => {
-    const camelKey = key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
-    // eslint-disable-next-line
-    (acc as Record<string, any>)[camelKey] = obj[key];
-    return acc;
-  }, {} as T);
-};
+import { toCamelCase } from '@/lib/utils';
 
 export default async function list(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {

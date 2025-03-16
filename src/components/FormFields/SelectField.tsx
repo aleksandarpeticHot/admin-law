@@ -1,36 +1,35 @@
 import { Select, SelectProps } from '@heroui/react'
 import React, { ChangeEvent } from 'react'
-import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-hook-form'
+import { useController, UseControllerProps } from 'react-hook-form'
 
-interface Props<T extends FieldValues> extends SelectProps {
-  control: Control<T>
-  rules?: Omit<RegisterOptions<T, Path<T>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined
-  name: Path<T>;
+interface Props extends UseControllerProps {
+  name: string;
+  // eslint-disable-next-line
+  control: any;
 }
 
-const SelectField = <T extends FieldValues>({ control, rules, name, ...selectProps }: Props<T>) => {
+type SelectFieldProps = Props & SelectProps
 
-  return <Controller
-    name={name}
-    control={control}
-    rules={rules}
-    render={({ field, fieldState }) => (
-      <Select
-        {...field}
-        {...selectProps}
-        name={name}
-        className='mt-[1em] mb-[2em]'
-        classNames={{
-          ...selectProps.classNames,
-          helperWrapper: [
-            'absolute top-[35px]'
-          ]
-        }}
-        isInvalid={Boolean(fieldState.error?.message)}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => field.onChange(e.target.value)}
-        errorMessage={fieldState.error?.message}
-      />
-    )}
+const SelectField: React.FC<SelectFieldProps> = (props) => {
+  const { field, fieldState } = useController(props)
+
+  const { name, ...selectProps } = props
+
+  return <Select
+    {...field}
+    {...selectProps}
+    id={name}
+    className='mt-[1em] mb-[2em]'
+    classNames={{
+      ...selectProps.classNames,
+      helperWrapper: [
+        'absolute top-[35px]'
+      ]
+    }}
+    selectedKeys={field?.value?.toString() || ''}
+    isInvalid={Boolean(fieldState.error?.message)}
+    onChange={(e: ChangeEvent<HTMLSelectElement>) => field.onChange(e.target.value)}
+    errorMessage={fieldState.error?.message}
   />
 }
 export default SelectField
