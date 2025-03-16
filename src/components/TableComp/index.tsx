@@ -116,6 +116,7 @@ const TableComp: React.FC<Props> = (props) => {
       <Link className='cursor-pointer' href={action.link?.replace(':id', row.id) as string}>
         <DynamicIcon
           color='#006FEE'
+          fill='#99C7FB'
           size={20}
           name={action.name}
         />
