@@ -61,7 +61,7 @@ const Clients: React.FC = () => {
   const router = useRouter()
 
   const [filterValues, setFilterValues] = useState({
-    rows: 2,
+    rows: 20,
     page: 1,
     clientTypeId: '',
     cityId: ''
