@@ -1,7 +1,7 @@
 import { useFormContext, useWatch } from 'react-hook-form'
 import { FormFields } from '../FormFields'
 import { Building2, Flag, IdCard, MapPinHouse, Phone } from 'lucide-react'
-import { SelectItem } from '@heroui/react'
+import { AutocompleteItem, SelectItem } from '@heroui/react'
 import { ClientOptionsType } from '@/lib/api/clients'
 import { useEffect } from 'react'
 
@@ -55,7 +55,7 @@ const ClientForm: React.FC<Props> = ({ options }) => {
             <IdCard />
           }
         />
-        <small style={{ color: watchUnique?.length > 13 ? 'red' : 'black' }}>{`${watchUnique?.length}/13`}</small>
+        <small style={{ color: watchUnique?.length > 13 ? 'red' : 'black' }}>{`${watchUnique?.length || 0}/13`}</small>
       </div>
     }
 
@@ -90,7 +90,7 @@ const ClientForm: React.FC<Props> = ({ options }) => {
           <IdCard />
         }
       />
-      <small style={{ color: watchUnique?.length > 8 ? 'red' : 'black' }}>{`${watchUnique?.length}/8`}</small>
+      <small style={{ color: watchUnique?.length > 8 ? 'red' : 'black' }}>{`${watchUnique?.length || 0}/8`}</small>
     </div>
   }
 
@@ -200,8 +200,8 @@ const ClientForm: React.FC<Props> = ({ options }) => {
           <Flag />
         }
       />
-      <FormFields.Select
-        label='Grad'
+      <FormFields.AutComplete
+        label={<span className='text-black'>{'Grad'}</span>}
         control={control}
         name={'cityId'}
         rules={{
@@ -211,23 +211,21 @@ const ClientForm: React.FC<Props> = ({ options }) => {
           }
         }}
         aria-label=''
+        autoComplete='off'
         labelPlacement='outside'
         classNames={{
-          innerWrapper: [
-            'w-[50%]'
-          ],
-          label: ['!text-black']
+          listboxWrapper: ['!text-black']
         }}
         variant='bordered'
         placeholder='Izaberite grad'
         value={'2'}
       >
         {options.cities.map((city) => (
-          <SelectItem
+          <AutocompleteItem
             key={city.id}
-          >{city.text}</SelectItem>
+          >{city.text}</AutocompleteItem>
         ))}
-      </FormFields.Select>
+      </FormFields.AutComplete>
     </div>
     <div className='flex align-centar gap-[20px]'>
       <FormFields.Input

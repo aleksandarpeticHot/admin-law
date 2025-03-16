@@ -1,7 +1,7 @@
 import { ApiClientReturnType } from './auth';
 import api from './http-common';
 
-const getClients = (filterValues?: ClientFilterValuesType) =>
+const getClients = (filterValues?: ClientFilterValuesType): ApiClientReturnType<ClientsDataType> =>
   api.post('/clients/list', filterValues)
 
 const getClientOptions = (): ApiClientReturnType<ClientOptionsType> =>
@@ -55,5 +55,17 @@ export type ClientStoreType = {
   description?: string | null;
 };
 
-export type ClientEditType = ClientStoreType & { id: number };
+export type ClientEditType = ClientStoreType & { id: string };
+
+export interface ClientsDataType {
+  success: boolean;
+  data: ClientEditType[];
+  pagination: Pagination;
+}
+export interface Pagination {
+  total: number;
+  numberPage: number;
+  numberRows: number;
+  totalPages: number;
+}
 

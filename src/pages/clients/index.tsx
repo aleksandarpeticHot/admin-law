@@ -61,7 +61,7 @@ const Clients: React.FC = () => {
   const router = useRouter()
 
   const [filterValues, setFilterValues] = useState({
-    rows: 20,
+    rows: 2,
     page: 1,
     clientTypeId: '',
     cityId: ''
@@ -158,6 +158,11 @@ const Clients: React.FC = () => {
           page={filterValues.page}
           noResultsMessage={'Lista klijenata je prazna.'}
           actions={actions}
+          totalPages={clientsData?.pagination?.totalPages || 0}
+          handleChangePage={(page) => setFilterValues({
+            ...filterValues,
+            page: page
+          })}
         />}
       </div>
     </div>

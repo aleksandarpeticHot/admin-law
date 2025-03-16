@@ -26,7 +26,8 @@ type TableColumHeaderType = {
 
 type RowType = {
   id: string;
-  [key: string]: string;
+  //eslint-disable-next-line
+  [key: string]: any;
 }
 
 export type ActionColumnType = {
@@ -44,6 +45,8 @@ interface Props {
   noResultsMessage?: string
   actions?: ActionColumnType[]
   handleClickAction?: (row: RowType, type: string) => void,
+  totalPages: number
+  handleChangePage: (page: number) => void
 }
 
 const TableComp: React.FC<Props> = (props) => {
@@ -52,10 +55,11 @@ const TableComp: React.FC<Props> = (props) => {
     rows,
     noResultsMessage,
     actions,
-    handleClickAction
+    totalPages,
+    page,
+    handleClickAction,
+    handleChangePage
   } = props
-
-  const [page, setPage] = React.useState(props.page);
 
   function renderCell(value: string) {
     return <div
@@ -76,17 +80,18 @@ const TableComp: React.FC<Props> = (props) => {
           color='default'
           isDisabled={false}
           page={page}
-          total={rows.length}
+          total={totalPages}
           variant='light'
-          onChange={setPage}
+          onChange={handleChangePage}
         />
       </div>
     );
-  }, [rows.length, page]);
+  }, [page, totalPages, handleChangePage]);
 
   const classNames = React.useMemo(
     () => ({
       wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      tr: ['h-[45px]'],
       th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
       td: [
         // changing the rows border radius
@@ -143,6 +148,7 @@ const TableComp: React.FC<Props> = (props) => {
     <Table
       isCompact
       removeWrapper
+      rowHeight={100}
       aria-label='Example table with custom cells, pagination and sorting'
       bottomContent={bottomContent}
       bottomContentPlacement='outside'
@@ -164,9 +170,9 @@ const TableComp: React.FC<Props> = (props) => {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={noResultsMessage ?? 'No users found'}>
-        {rows.map((row: RowType) => {
-          return <TableRow key={row?.id}>
+      <TableBody emptyContent={noResultsMessage ?? 'No users found'} items={rows || []}>
+        {(row) => (
+          <TableRow key={row?.id}>
             {tableColumnHeaders.map((column) => {
               if (column.key) {
                 const cellValue = row[column.key as keyof RowType];
@@ -178,7 +184,7 @@ const TableComp: React.FC<Props> = (props) => {
               }
             })}
           </TableRow>
-        })}
+        )}
       </TableBody>
     </Table>
   );
