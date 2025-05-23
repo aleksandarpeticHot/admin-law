@@ -44,7 +44,8 @@ const tableColumnHeaders = [
     key: 'clientType'
   },
   {
-    name: 'Akcije'
+    name: 'Akcije',
+    key: 'actions'
   }
 ]
 
@@ -56,7 +57,6 @@ const actions: ActionColumnType[] = [
     type: 'link'
   }
 ]
-
 const Clients: React.FC = () => {
   const router = useRouter()
 
@@ -75,7 +75,8 @@ const Clients: React.FC = () => {
 
   const {
     data: clientsData,
-    isLoading: isLoadingClients
+    isLoading: isLoadingClients,
+    isValidating: isRefetchingClients
   } = useClientsSWR(filterValues)
 
   const options = useMemo(() => clientOptions ?? { cities: [], clientTypes: [] }, [clientOptions]);
@@ -98,16 +99,19 @@ const Clients: React.FC = () => {
           onValueChange={(value: string) => setSearch(value)}
         />
         <div className='flex gap-3'>
-
+   
           <Autocomplete
             className='w-[200px]'
-            value={filterValues.cityId}
             aria-label=''
+            value={filterValues.cityId}
             placeholder='Odaberite grad'
-            onSelectionChange={(selected) => setFilterValues({
-              ...filterValues,
-              cityId: selected?.toString() || ''
-            })}
+            onSelectionChange={(selected) => {
+              console.log(selected)
+              setFilterValues({
+                ...filterValues,
+                cityId: selected?.toString() || ''
+              })
+            }}
           >
             {options.cities.map((city) => (
               <AutocompleteItem
@@ -141,8 +145,8 @@ const Clients: React.FC = () => {
       Dodaj Klijenta
     </Button>
   }
-
-  const isLoading = isLoadingClients || isLoadingOptions
+  
+  const isLoading = (isLoadingClients || isLoadingOptions) && !isRefetchingClients
 
   return <PageLayout
     title={'Klijenti'}

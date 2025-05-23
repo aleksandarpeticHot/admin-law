@@ -26,7 +26,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
         helperWrapper: ['absolute top-[35px]']
       }}
       value={field.value || ''}
-      errorMessage={fieldState.error?.message}
+      errorMessage={<span style={{ marginLeft: 30 }}>{fieldState.error?.message}</span>}
       isInvalid={Boolean(fieldState.error)}
       onValueChange={(value) => field.onChange(value)}
     />

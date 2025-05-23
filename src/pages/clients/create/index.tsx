@@ -6,11 +6,13 @@ import { notify } from '@/pages/lib/notify'
 import { useClientsOptionsSWR } from '@/swr/clientSwr'
 import { Button } from '@heroui/react'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 const Create = () => {
   const router = useRouter()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     data: clientOptions,
@@ -26,6 +28,7 @@ const Create = () => {
   })
 
   async function onSubmit(data: ClientStoreType) {
+    setIsLoading(true)
     try {
       await ClientService.createClient(data)
       notify('Uspjeh', 'success', 'Uspjesno ste kreirali klijenta')
@@ -33,6 +36,7 @@ const Create = () => {
     } catch (error) {
       console.log(error)
     }
+    setIsLoading(false)
   }
 
   function renderActions() {
@@ -57,7 +61,7 @@ const Create = () => {
 
   return <PageLayout
     title={'Dodaj klijenta'}
-    isLoading={isLoadingOptions}
+    isLoading={isLoadingOptions || isLoading}
     actions={renderActions}
     closeUrl={Routes.CLIENTS}
     onSubmit={methods.handleSubmit(onSubmit)}

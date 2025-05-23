@@ -13,7 +13,8 @@ export default {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
-        'muted-foreground': 'rgb(113, 113, 122)'
+        'muted-foreground': 'rgb(113, 113, 122)',
+        'primary' : '#006FEE'
       }
     }
   },

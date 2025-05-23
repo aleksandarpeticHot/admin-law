@@ -53,7 +53,7 @@ const PageLayout: React.FC<Props> = (props) => {
           <div className='flex items-center gap-3'>
             <h1 className='text-xl font-semibold tracking-tight animate-slide-in flex align-baseline gap-[5px]'>
               {closeUrl && <Link className='mt-[2px]' href={closeUrl}>
-                <ArrowLeftCircle color='#f31260' />
+                <ArrowLeftCircle />
               </Link>
               }
               {title}

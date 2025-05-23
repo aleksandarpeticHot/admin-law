@@ -31,9 +31,9 @@ model client_types {
 model Client {
   id                  String  @id @default(cuid())
   name                String   @db.VarChar(150)
-  state               String   @db.VarChar(200)
-  city_id             Int
-  street              String   @db.VarChar(200)
+  state               String?   @db.VarChar(200)
+  city_id             Int?
+  street              String?   @db.VarChar(200)
   unique_id           String   @db.VarChar(13)
   phone_number        String   @db.VarChar(50)
   fax                 String?  @db.VarChar(200)
@@ -42,7 +42,7 @@ model Client {
   client_type_id      Int
   description         String?  @db.VarChar(1000)
 
-  city           cities     @relation(fields: [city_id], references: [id]) 
+  city           cities?     @relation(fields: [city_id], references: [id]) 
   clientType     client_types @relation(fields: [client_type_id], references: [id]) 
   @@map("clients") 
 }

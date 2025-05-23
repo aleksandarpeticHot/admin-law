@@ -43,9 +43,9 @@ export type ClientOptionsType = {
 
 export type ClientStoreType = {
   name: string;
-  state: string;
-  cityId: number;
-  street: string;
+  state?: string;
+  cityId?: number;
+  street?: string;
   uniqueId: string;
   phoneNumber: string;
   fax?: string | null;

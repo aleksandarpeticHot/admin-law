@@ -112,11 +112,12 @@ const TableComp: React.FC<Props> = (props) => {
     return <Tooltip
       content={action.popupMessage}
       key={`${row.id}-${action.name}`}
+      closeDelay={300}
     >
       <Link className='cursor-pointer' href={action.link?.replace(':id', row.id) as string}>
         <DynamicIcon
           color='#006FEE'
-          fill='#99C7FB'
+          fill='white'
           size={20}
           name={action.name}
         />
@@ -175,7 +176,7 @@ const TableComp: React.FC<Props> = (props) => {
         {(row) => (
           <TableRow key={row?.id}>
             {tableColumnHeaders.map((column) => {
-              if (column.key) {
+              if (column.key && column.key !== 'actions') {
                 const cellValue = row[column.key as keyof RowType];
                 return <TableCell key={`${column.key}${row.id}`}>{renderCell(cellValue)}</TableCell>
               } else {

@@ -31,7 +31,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, href, label }) => {
         'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200',
         'hover:bg-[#F4F4F5] hover:text-sidebar-accent-foreground hover:shadow-md hover:scale-105',
         isActive
-          ? 'bg-[#006FEE] text-white shadow-md scale-105'
+          ? 'bg-primary text-white shadow-md scale-105'
           : 'hover:bg-[#F4F4F5] hover:text-sidebar-accent-foreground hover:shadow-md hover:scale-105'
       )}
     >

@@ -35,11 +35,11 @@ const ClientForm: React.FC<Props> = ({ options }) => {
             },
             maxLength: {
               value: 13,
-              message: 'Broj karaktera je 13!'
+              message: 'Polje mora imati tačno 13 karaktera!'
             },
             minLength: {
               value: 13,
-              message: 'Broj karaktera je 13!'
+              message: 'Polje mora imati tačno 13 karaktera!'
             }
           }}
           name='uniqueId'
@@ -70,11 +70,11 @@ const ClientForm: React.FC<Props> = ({ options }) => {
           },
           maxLength: {
             value: 8,
-            message: 'Broj karaktera je 8!'
+            message: 'Polje mora imati tačno 8 karaktera!'
           },
           minLength: {
             value: 8,
-            message: 'Broj karaktera je 8!'
+            message: 'Polje mora imati tačno 8 karaktera!'
           }
         }}
         name='uniqueId'
@@ -179,10 +179,6 @@ const ClientForm: React.FC<Props> = ({ options }) => {
         control={control}
         label='Drzava'
         rules={{
-          required: {
-            value: true,
-            message: 'Molimo unesite drzavu'
-          },
           maxLength: {
             value: 200,
             message: 'Max. broj karaktera je 200!'
@@ -204,12 +200,6 @@ const ClientForm: React.FC<Props> = ({ options }) => {
         label={<span className='text-black'>{'Grad'}</span>}
         control={control}
         name={'cityId'}
-        rules={{
-          required: {
-            value: true,
-            message: 'Molimo izaberite grad!'
-          }
-        }}
         aria-label=''
         autoComplete='off'
         labelPlacement='outside'
@@ -232,10 +222,6 @@ const ClientForm: React.FC<Props> = ({ options }) => {
         control={control}
         label='Ulica'
         rules={{
-          required: {
-            value: true,
-            message: 'Molimo unesite ulicu'
-          },
           maxLength: {
             value: 200,
             message: 'Max. broj karaktera je 200!'
