@@ -6,8 +6,8 @@ export default async function clientsOptions(req: NextApiRequest, res: NextApiRe
     return res.status(405).json({ error: 'Method not allowed' })
   }
   try {
-    const cities = await prisma.cities.findMany()
-    const clientTypes = await prisma.client_types.findMany()
+    const cities = await prisma.city.findMany()
+    const clientTypes = await prisma.clientType.findMany()
 
     return res.status(200).json({
       cities,

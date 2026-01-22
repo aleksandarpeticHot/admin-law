@@ -7,42 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id        String  @id @default(uuid())
-  email     String  @unique
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  @@map("users")
 }
 
-model cities {
-  id    Int      @id @default(autoincrement())
-  text  String   @db.VarChar(50)
+model City {
+  id      Int      @id @default(autoincrement())
+  text    String   @db.VarChar(50)
+  clients Client[]
 
-  Client Client[]  // Back-relation (One-to-Many)
+  @@map("cities")
 }
 
-model client_types {
-  id    Int      @id @default(autoincrement())
-  text  String   @db.VarChar(50)
+model ClientType {
+  id      Int      @id @default(autoincrement())
+  text    String   @db.VarChar(50)
+  clients Client[]
 
-  Client Client[]  // Back-relation (One-to-Many)
+  @@map("client_types")
 }
 
 model Client {
-  id                  String  @id @default(cuid())
-  name                String   @db.VarChar(150)
-  state               String?   @db.VarChar(200)
+  id                  String      @id @default(dbgenerated("generate_cuid()"))
+  name                String      @db.VarChar(150)
+  state               String?     @db.VarChar(200)
   city_id             Int?
-  street              String?   @db.VarChar(200)
-  unique_id           String   @db.VarChar(13)
-  phone_number        String   @db.VarChar(50)
-  fax                 String?  @db.VarChar(200)
-  bank_account_number String? @db.VarChar(50)
-  contact             String?  @db.VarChar(200)
+  street              String?     @db.VarChar(199)
+  unique_id           String      @unique @db.VarChar(13)
+  fax                 String?     @db.VarChar(200)
+  bank_account_number String?     @db.VarChar(50)
+  contact             String?     @db.VarChar(200)
   client_type_id      Int
-  description         String?  @db.VarChar(1000)
+  description         String?     @db.VarChar(1000)
+  phone_number        String      @db.VarChar(50)
+  city                City?       @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  clientType          ClientType  @relation(fields: [client_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  city           cities?     @relation(fields: [city_id], references: [id]) 
-  clientType     client_types @relation(fields: [client_type_id], references: [id]) 
-  @@map("clients") 
+  @@map("clients")
+}
+
+model Office {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  domain        String    @unique
+  address       String
+  mobile_number String
+  city          String
+  logo_url      String?
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@map("offices")
 }

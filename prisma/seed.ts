@@ -15,14 +15,14 @@ async function main() {
     process.exit(1);
   }
 
-  const existingUser = await prisma.users.findUnique({
+  const existingUser = await prisma.user.findUnique({
     where: { email }
   });
 
   if (!existingUser) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.users.create({
+    await prisma.user.create({
       data: {
         email,
         password: hashedPassword
